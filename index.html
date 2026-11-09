@@ -49,7 +49,7 @@
     font-weight: 400;
     color: var(--faint);
   }
-  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
 
   .item {
     display: block;
@@ -77,8 +77,9 @@
     margin: 12px 0 0; padding: 8px 10px;
     font-family: var(--mono); font-size: 13px; color: var(--text);
     background: var(--bg); border: 1px solid var(--line); border-radius: 7px;
-    overflow-x: auto; white-space: nowrap;
+    overflow-wrap: anywhere;
   }
+  .cmd .nw { white-space: nowrap; }
   .cmd::before { content: "$ "; color: var(--accent, var(--sky)); }
 
   footer {
@@ -107,7 +108,7 @@
       <a class="item" href="https://github.com/monoaster/tokwhere" style="--accent:#7fb6e8">
         <div class="top"><span class="name">tokwhere</span><span class="new">new</span><span class="arrow">→</span></div>
         <p class="desc">See where your coding agent's tokens went. Reads Claude Code and Codex session logs.</p>
-        <div class="cmd">npx github:monoaster/tokwhere --days 7</div>
+        <div class="cmd">npx github:monoaster/tokwhere <span class="nw">--days 7</span></div>
       </a>
     </li>
   </ul>
