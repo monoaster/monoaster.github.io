@@ -532,12 +532,18 @@
     ctx.strokeStyle = '#37355e'; ctx.lineWidth = RW - 12; ctx.stroke();
     ctx.setLineDash([14, 20]); ctx.lineDashOffset = cum[i0] % 34;
     ctx.strokeStyle = '#ffc23d'; ctx.lineWidth = 2.5; ctx.stroke(); ctx.setLineDash([]);
-    // painted lane arrows, in the lane the car keeps to
+    // painted lane arrows: only on straight stretches, turned to the road and centred in the car's lane
     ctx.fillStyle = 'rgba(241,238,251,.72)';
-    for (let y = Math.ceil(Math.max(y0, apronB + 150) / 560) * 560; y < Math.min(y1, roadEnd - 160); y += 560) {
-      const x = roadX(y) + RW * .26, w = RW * .09;
-      ctx.fillRect(x - w * .3, y - 16, w * .6, 20);
-      ctx.beginPath(); ctx.moveTo(x - w, y + 3); ctx.lineTo(x + w, y + 3); ctx.lineTo(x, y + 17); ctx.fill();
+    for (let y = Math.ceil(Math.max(y0, apronB + 150) / 140) * 140, lastY = -1e9; y < Math.min(y1, roadEnd - 160); y += 140) {
+      const slope = (roadX(y + 30) - roadX(y - 30)) / 60, bend = Math.abs(roadX(y + 40) - 2 * roadX(y) + roadX(y - 40));
+      if (Math.abs(slope) > .12 || bend > 1.2 || bands.some(b => y > b.y - 30 && y < b.y + b.h + 30)) continue;
+      if (Math.floor(y / 140) % 3 && y - lastY < 420) continue;                     // roughly one every 420px
+      lastY = y;
+      const ang = Math.atan2(1, slope), off = RW * .26, w = RW * .09;
+      ctx.save(); ctx.translate(roadX(y) + Math.sin(ang) * off, y - Math.cos(ang) * off); ctx.rotate(ang);
+      ctx.fillRect(-16, -w * .3, 20, w * .6);
+      ctx.beginPath(); ctx.moveTo(3, -w); ctx.lineTo(3, w); ctx.lineTo(17, 0); ctx.fill();
+      ctx.restore();
     }
     // end of the road: stop line and a striped barrier
     if (y1 > roadEnd - 20) {
