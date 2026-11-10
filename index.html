@@ -4,131 +4,813 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>mono-aster</title>
-<meta name="description" content="Free, open-source tools for coding agents and side projects by mono-aster.">
-<meta name="theme-color" content="#0d0e11">
+<meta name="description" content="Free, open-source side projects by mono-aster, built late at night.">
+<meta name="theme-color" content="#2b1646">
 <meta property="og:title" content="mono-aster">
-<meta property="og:description" content="Free, open-source tools for coding agents and side projects.">
+<meta property="og:description" content="Free, open-source side projects, built late at night. Scroll to drive.">
 <meta property="og:url" content="https://monoaster.github.io/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d0e11'/%3E%3Cg stroke='%237fb6e8' stroke-width='3.2' stroke-linecap='round'%3E%3Cpath d='M16 6v20'/%3E%3Cpath d='M7.3 11l17.4 10'/%3E%3Cpath d='M7.3 21l17.4-10'/%3E%3C/g%3E%3C/svg%3E">
+<meta property="og:image" content="https://monoaster.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232b1646'/%3E%3Cg stroke='%23ffc23d' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M16 6v20'/%3E%3Cpath d='M7.3 11l17.4 10'/%3E%3Cpath d='M7.3 21l17.4-10'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/big-shoulders-display-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/overpass.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  @font-face { font-family: "Big Shoulders Display"; font-weight: 900; font-display: swap; src: url(assets/fonts/big-shoulders-display-900.woff2) format("woff2"); }
+  @font-face { font-family: "Overpass"; font-weight: 500 900; font-display: swap; src: url(assets/fonts/overpass.woff2) format("woff2"); }
+  @font-face { font-family: "Overpass Mono"; font-weight: 500 700; font-display: swap; src: url(assets/fonts/overpass-mono.woff2) format("woff2"); }
+  @font-face { font-family: "Doto"; font-weight: 900; font-display: swap; src: url(assets/fonts/doto-900.woff2) format("woff2"); }
   :root {
-    --bg: #0d0e11;
-    --panel: #15171c;
-    --panel-hover: #1b1e24;
-    --line: #282c34;
-    --text: #ece8e1;
-    --dim: #8c919a;
-    --faint: #6b707a;
-    --sky: #7fb6e8;
-    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --plum: #2b1646;
+    --indigo: #171a44;
+    --harbour: #0f2647;
+    --asphalt: #37355e;
+    --paint: #f1eefb;
+    --sodium: #ffc23d;
+    --ink: #1a1300;
+    --green: #0a6a4c;
+    --green-deep: #06281e;
+    --blue: #123f9c;
+    --tail: #e2232a;
+    --post: #6d6a8c;
+    --sign: "Overpass", "Helvetica Neue", Arial, sans-serif;
+    --road-letter: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --led: "Doto", "Overpass Mono", ui-monospace, monospace;
+    --works: #ff8a1f;
+    --cmd: "Overpass Mono", ui-monospace, Menlo, monospace;
+    --stretch: 2.3;
+    --fs: 21vw;
   }
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scrollbar-color: var(--sodium) var(--indigo); scroll-behavior: smooth; }
   body {
     margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    line-height: 1.45;
+    background: linear-gradient(var(--plum), var(--indigo) 45%, var(--harbour));
+    color: var(--paint);
+    font-family: var(--sign);
+    font-weight: 500;
+    line-height: 1.4;
     -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
   }
-  main {
-    max-width: 560px;
+  ::selection { background: var(--sodium); color: var(--ink); }
+  a { color: inherit; }
+  a:focus-visible { outline: 3px solid #8fdcff; outline-offset: 4px; border-radius: 6px; }
+
+  #road { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100lvh; z-index: 0; display: block; }
+  main { position: relative; z-index: 1; }
+
+  /* ---------- start: the name is painted on the tarmac ---------- */
+  .hero {
+    position: relative;
+    min-height: max(100vh, 640px); min-height: max(100svh, 640px);
+    padding: 9svh 16px 0;
+    text-align: center;
+  }
+  .name {
     margin: 0 auto;
-    padding: max(48px, env(safe-area-inset-top)) 16px 40px;
+    width: min(1100px, 100%);
+    height: calc(var(--fs) * .76 * var(--stretch));
+    font: 900 var(--fs)/.76 var(--road-letter);
+    text-transform: uppercase;
+    letter-spacing: 0;
+    color: var(--paint);
+    white-space: nowrap;
   }
-  .mark { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 17px; }
-  .mark svg { width: 22px; height: 22px; flex: none; }
-  .bio { margin: 14px 0 0; color: var(--dim); font-size: 15px; max-width: 40ch; }
+  .name span { display: inline-block; transform: scaleY(var(--stretch)); transform-origin: 50% 0; }
+  .bio {
+    margin: 22px auto 0;
+    max-width: 31ch;
+    font-size: 17px;
+    text-wrap: balance;
+  }
+  .plates { margin: 20px auto 0; max-width: 340px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .plate {
+    display: inline-flex; align-items: center; gap: 8px;
+    min-height: 46px; padding: 0 16px;
+    font-weight: 800; font-size: 16px; text-decoration: none;
+    color: var(--ink); background: var(--paint);
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 3px var(--paint), inset 0 0 0 5px var(--ink), 0 10px 22px -10px rgba(5,4,20,.8);
+    transition: transform .18s cubic-bezier(.2,.8,.2,1);
+  }
+  .plate.go { background: var(--sodium); box-shadow: inset 0 0 0 3px var(--sodium), inset 0 0 0 5px var(--ink), 0 10px 22px -10px rgba(5,4,20,.8); }
+  .plate.go { flex: 1 0 100%; justify-content: center; min-height: 54px; font-size: 18px; }
+  .plate:not(.go) { flex: 1; justify-content: center; }
+  .plate:hover { transform: translateY(-2px); }
+  .plate:active { transform: translateY(1px); }
+  .plate svg, .exit svg, .lanes svg { width: 18px; height: 18px; flex: none; }
 
-  h2 {
-    margin: 40px 0 12px;
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--faint);
+  /* distance board: the scroll hint */
+  .dist {
+    position: absolute; left: max(16px, calc(50vw - 520px)); bottom: 3svh;
+    width: 196px; padding: 14px 14px 0;
+    text-align: left;
+    background: var(--green); border-radius: 10px;
+    box-shadow: inset 0 0 0 4px var(--green), inset 0 0 0 6px #fff, 0 16px 30px -14px rgba(5,4,20,.85);
   }
-  ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .dist ul { list-style: none; margin: 0; padding: 0 2px; font-weight: 800; font-size: 14px; }
+  .dist li a { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; text-decoration: none; }
+  .dist li a:hover span:first-child { text-decoration: underline; text-underline-offset: 3px; }
+  .dist li span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dist li span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .dist p {
+    margin: 10px -8px 6px; padding: 6px 8px;
+    background: var(--sodium); color: var(--ink);
+    font-weight: 800; font-size: 14px; border-radius: 4px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .dist p svg { width: 16px; height: 16px; }
+  .dist::after, .sign::after, .billboard::after {
+    content: ""; position: absolute; top: 100%; left: 24%; right: 24%; height: 34px;
+    border-left: 7px solid var(--post); border-right: 7px solid var(--post);
+  }
 
-  .item {
-    display: block;
-    padding: 16px 18px 17px;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    color: inherit;
-    text-decoration: none;
-    transition: background-color .15s, border-color .15s;
+  /* ---------- stops ---------- */
+  .stops { list-style: none; margin: 0; padding: 38vh 0 0; }
+  .stops > li + li { margin-top: 62vh; }
+  .stops > li > * { position: relative; width: min(520px, calc(100vw - 116px)); }
+  .stops > li:nth-child(odd) > * { margin-left: max(16px, calc(50vw - 520px)); }
+  .stops > li:nth-child(even) > * { margin-left: auto; margin-right: max(16px, calc(50vw - 520px)); }
+
+  .sign {
+    padding: 26px 18px 22px;
+    background: var(--green); color: #fff;
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 6px var(--green), inset 0 0 0 9px #fff, 0 26px 50px -18px rgba(5,4,20,.9);
   }
-  .item:hover { background: var(--panel-hover); border-color: #353a44; }
-  .item:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
-  .top { display: flex; align-items: baseline; gap: 10px; }
-  .name { font-family: var(--mono); font-size: 18px; font-weight: 600; color: var(--accent, var(--text)); }
+  .sign h2, .billboard h2 { margin: 0; font-weight: 900; font-size: clamp(27px, 8vw, 52px); line-height: 1.06; letter-spacing: -.01em; text-wrap: balance; }
+  .sign p, .billboard p { margin: 12px 0 0; font-size: 17px; max-width: 34ch; }
+  /* retroreflection: a sign answers the headlights as the car reaches it */
+  .sign, .billboard, .gantry { transition: filter .5s cubic-bezier(.2,.8,.2,1); }
+  .lit { filter: brightness(1.13) saturate(1.08); }
   .new {
-    font-family: var(--mono); font-size: 11px; color: var(--bg);
-    background: var(--accent, var(--sky)); border-radius: 4px; padding: 1px 6px;
-    position: relative; top: -2px;
+    position: absolute; top: -13px; right: 22px;
+    padding: 4px 10px; border-radius: 5px;
+    background: var(--sodium); color: var(--ink);
+    font-weight: 900; font-size: 14px;
+    box-shadow: inset 0 0 0 2px var(--sodium), inset 0 0 0 3.5px var(--ink);
+    transform: rotate(-3deg);
   }
-  .arrow { margin-left: auto; color: var(--faint); font-family: var(--mono); transition: transform .15s, color .15s; }
-  .item:hover .arrow { color: var(--text); transform: translateX(2px); }
-  .desc { margin: 6px 0 0; color: var(--dim); font-size: 15px; }
   .cmd {
-    margin: 12px 0 0; padding: 8px 10px;
-    font-family: var(--mono); font-size: 13px; color: var(--text);
-    background: var(--bg); border: 1px solid var(--line); border-radius: 7px;
-    overflow-wrap: anywhere;
+    display: block; margin-top: 16px; padding: 11px 10px;
+    font: 500 12px/1.45 var(--cmd);
+    background: var(--green-deep); color: #fff; border-radius: 6px;
+    overflow-wrap: anywhere; user-select: all;
   }
-  .cmd .nw { white-space: nowrap; }
-  .cmd::before { content: "$ "; color: var(--accent, var(--sky)); }
+  .cmd span { white-space: nowrap; }
+  .cmd::before { content: "$ "; color: var(--sodium); }
+  /* variable message sign: the project's own numbers, in lights */
+  .vms {
+    margin-top: 16px; padding: 12px 12px 10px;
+    background: #0a0912; border-radius: 6px;
+    box-shadow: inset 0 0 0 2px #2b2940;
+  }
+  .vms pre {
+    margin: 0; min-height: 3.45em;
+    font: 900 clamp(17px, 5.6vw, 24px)/1.15 var(--led);
+    color: #ffb62e; text-transform: uppercase; white-space: pre;
+    text-shadow: 0 0 9px rgba(255,150,20,.55);
+    overflow: hidden;
+  }
+  .vms-note { margin: 8px 0 0 !important; font-size: 14px !important; color: #d3efe4; }
+  .exit {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 16px; min-height: 46px; padding: 0 16px;
+    background: var(--sodium); color: var(--ink);
+    font-weight: 800; font-size: 16px; text-decoration: none; border-radius: 7px;
+    transition: transform .18s cubic-bezier(.2,.8,.2,1);
+  }
+  .exit:hover { transform: translateX(3px); }
 
-  footer {
-    margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--line);
-    display: flex; flex-wrap: wrap; gap: 8px 20px;
-    font-family: var(--mono); font-size: 13px;
+  .billboard {
+    background: #0c0b1f; color: #fff; border-radius: 10px;
+    box-shadow: 0 0 0 5px #4c486e, 0 26px 50px -18px rgba(5,4,20,.9);
   }
-  footer a { color: var(--dim); text-decoration: none; }
-  footer a:hover { color: var(--text); }
+  .billboard::before {           /* three lamp arms washing the board */
+    content: ""; position: absolute; left: 12%; right: 12%; top: -17px; height: 12px;
+    background:
+      radial-gradient(circle at 50% 100%, #ffe2ae 0 4px, transparent 5px) 0 0 / 33.34% 100%,
+      linear-gradient(var(--post), var(--post)) 0 0 / 100% 3px no-repeat;
+  }
+  .billboard img { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; border-radius: 10px 10px 0 0; background: var(--indigo); }
+  .billboard img { transition: opacity .22s; }
+  .billboard img.cut { opacity: .15; }
+  .billboard .cap { padding: 18px 20px 20px; }
+
+  /* ---------- end of the road: the Follow gantry ---------- */
+  .end {
+    position: relative; margin-top: 56vh;
+    min-height: 100vh; min-height: 100svh;
+    padding: 7svh 16px 0;
+  }
+  .gantry {
+    position: relative; margin: 0 auto; width: min(760px, 100%);
+    padding: 22px 22px 12px;
+    background: var(--blue); color: #fff; border-radius: 16px;
+    box-shadow: inset 0 0 0 6px var(--blue), inset 0 0 0 9px #fff, 0 30px 60px -20px rgba(3,6,24,.95);
+  }
+  .gantry::before, .gantry::after {
+    content: ""; position: absolute; top: 100%; width: 9px; height: 30svh; background: linear-gradient(var(--post), rgba(109,106,140,0));
+  }
+  .gantry::before { left: 22px; } .gantry::after { right: 22px; }
+  .gantry h2 { margin: 0 0 8px; font-weight: 900; font-size: clamp(30px, 5.4vw, 50px); line-height: 1.05; letter-spacing: -.01em; }
+  .gantry .why { margin: 0 0 12px; font-size: 17px; max-width: 34ch; }
+  .lanes { list-style: none; margin: 0; padding: 0; }
+  .lanes li:first-child a {
+    background: var(--sodium); color: var(--ink); border-top: 0; border-radius: 8px;
+    padding: 0 14px; margin: 0 0 8px; min-height: 60px;
+    box-shadow: inset 0 0 0 3px var(--sodium), inset 0 0 0 5px var(--ink);
+  }
+  .lanes li:nth-child(2) a { border-top: 0; }
+  @media (max-width: 520px) { .lanes li:first-child a span { display: none; } }
+  .lanes a {
+    display: flex; align-items: center; gap: 12px;
+    min-height: 54px; border-top: 2px solid rgba(255,255,255,.9);
+    text-decoration: none; font-weight: 800; font-size: clamp(19px, 2.6vw, 26px);
+  }
+  .lanes a span { margin-left: auto; font-weight: 500; font-size: 16px; }
+  .lanes a svg { transition: transform .18s cubic-bezier(.2,.8,.2,1); }
+  .lanes a:hover svg { transform: translate(2px, -2px); }
+  .works {
+    position: absolute; left: 50%; bottom: calc(62px + env(safe-area-inset-bottom)); transform: translateX(-50%) rotate(-1.5deg);
+    margin: 0; padding: 10px 16px; width: max-content; max-width: calc(100% - 32px);
+    background: var(--works); color: var(--ink); border-radius: 6px;
+    box-shadow: inset 0 0 0 3px var(--works), inset 0 0 0 5px var(--ink), 0 14px 26px -12px rgba(3,6,24,.9);
+    font-weight: 800; font-size: 15px; line-height: 1.25; text-align: center;
+  }
+  .works span { display: block; font-weight: 500; }
+  /* follow, kept in reach during the drive */
+  .tail {
+    position: fixed; z-index: 2; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom));
+    display: inline-flex; align-items: center; min-height: 46px; padding: 0 16px;
+    background: var(--sodium); color: var(--ink); border-radius: 8px;
+    font-weight: 800; font-size: 16px; text-decoration: none;
+    box-shadow: inset 0 0 0 3px var(--sodium), inset 0 0 0 5px var(--ink), 0 12px 24px -10px rgba(5,4,20,.85);
+    transition: transform .3s cubic-bezier(.2,.8,.2,1), opacity .3s, visibility .3s;
+  }
+  .tail.off { transform: translateY(80px); opacity: 0; visibility: hidden; }
+  .foot { position: absolute; left: 16px; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom)); margin: 0; text-align: center; font-size: 14px; color: #c9c4e6; }
+
+  @media (min-width: 760px) {
+    :root { --stretch: 1.35; --fs: 17vw; }
+    .name { width: min(1100px, 100%, max(420px, calc((51svh - 217px) * 4.5))); }
+    .plates { max-width: none; }
+    .plate.go, .plate:not(.go) { flex: none; }
+    .bio { font-size: 19px; }
+    .dist { width: 236px; }
+    .dist li span:first-child { white-space: nowrap; }
+    .bio { max-width: 46ch; }
+    .sign { padding: 34px 32px 30px; }
+    .cmd { font-size: 14px; padding: 12px 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
+<canvas id="road" aria-hidden="true"></canvas>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="down" viewBox="0 0 24 24"><path d="M12 4v15M5 12.5l7 7 7-7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="exit" viewBox="0 0 24 24"><path d="M6 18L18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
 <main>
-  <header>
-    <div class="mark">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><g stroke="#7fb6e8" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v18"/><path d="M4.2 7.5l15.6 9"/><path d="M4.2 16.5l15.6-9"/></g></svg>
-      <span>mono-aster</span>
-    </div>
+  <header class="hero">
+    <h1 class="name"><span>mono-aster</span></h1>
     <p class="bio">Programmer turned vibe coder. Side projects built late at night, all free and open source.</p>
+    <nav class="plates" aria-label="Follow mono-aster">
+      <a class="plate go" href="https://www.instagram.com/monoasterdev/">Follow on Instagram</a>
+      <a class="plate" href="https://www.threads.com/@monoasterdev">Threads</a>
+      <a class="plate" href="https://x.com/monoasterdev">X</a>
+    </nav>
+    <div class="dist avoid roadside">
+      <ul id="dist"><li><span>tokwhere</span></li><li><span>project-illusion</span></li><li><span>Follow</span></li></ul>
+      <p>Scroll to drive <svg><use href="#down"/></svg></p>
+    </div>
   </header>
 
-  <!-- Newest first. Add a tool here when its repo goes public; move the "new" tag to it. -->
-  <h2>agent tools</h2>
-  <ul>
+  <!-- Newest first. To add a project, copy one <li> to the top and move the "New" tag to it.
+       The road, the distances, the river and the metro line re-route themselves.
+       class="sign" is a green road sign; class="billboard" takes an <img> or <video> on top
+       (add "drivein" and cars park under it; data-reel lists more pictures to show in turn). A .vms board is optional: lines split by |, pages by ;; -->
+  <ol class="stops">
     <li>
-      <a class="item" href="https://github.com/monoaster/tokwhere" style="--accent:#7fb6e8">
-        <div class="top"><span class="name">tokwhere</span><span class="new">new</span><span class="arrow">→</span></div>
-        <p class="desc">See where your coding agent's tokens went. Reads Claude Code and Codex session logs.</p>
-        <div class="cmd">npx github:monoaster/tokwhere <span class="nw">--days 7</span></div>
-      </a>
+      <article class="sign avoid roadside" data-stop="tokwhere">
+        <span class="new">New</span>
+        <h2>tokwhere</h2>
+        <p>See where your coding agent's tokens went. Reads Claude Code and Codex session logs.</p>
+        <div class="vms" aria-hidden="true"><pre data-pages="one 24h session|201,176,063|tokens used;;bash 849 calls|~576k tokens|72 failed;;file-1.swift|read 23 times|8 unchanged;;1300 tool calls|17 subagents|all counted"></pre></div>
+        <p class="vms-note">Real numbers from one 24-hour session.</p>
+        <code class="cmd">npx github:monoaster/tokwhere <span>--days 7</span></code>
+        <a class="exit" href="https://github.com/monoaster/tokwhere">Open on GitHub <svg><use href="#exit"/></svg></a>
+      </article>
     </li>
-  </ul>
-
-  <h2>projects</h2>
-  <ul>
     <li>
-      <a class="item" href="https://github.com/monoaster/project-illusion" style="--accent:#e8b04a">
-        <div class="top"><span class="name">project-illusion</span><span class="arrow">→</span></div>
-        <p class="desc">A custom Home for Android TV and Google TV, installed over Wi‑Fi with Claude Code.</p>
-      </a>
+      <article class="billboard drivein avoid roadside" data-stop="project-illusion">
+        <img src="assets/pi-home.webp" data-reel="assets/pi-home.webp|assets/pi-dial.webp" width="960" height="540" alt="Project Illusion on a TV: the Home screen with a greeting, clock and weather, a Continue watching card, and five app windows with a night road running under them. A second picture shows the hold-OK dial.">
+        <div class="cap">
+          <h2>project-illusion</h2>
+          <p>A custom Home for Android TV and Google TV, installed over Wi‑Fi with Claude Code.</p>
+          <a class="exit" href="https://github.com/monoaster/project-illusion">Open on GitHub <svg><use href="#exit"/></svg></a>
+        </div>
+      </article>
     </li>
-  </ul>
+  </ol>
 
-  <footer>
-    <a href="https://github.com/monoaster">github</a>
-    <a href="https://www.instagram.com/monoasterdev/">instagram</a>
-    <a href="https://www.threads.com/@monoasterdev">threads</a>
-    <a href="https://x.com/monoasterdev">x</a>
-  </footer>
+  <section class="end" id="follow">
+    <div class="gantry avoid" data-stop="Follow">
+      <h2>Follow mono-aster</h2>
+      <p class="why">The road ends here for now. Follow to see the next stop.</p>
+      <ul class="lanes">
+        <li><a href="https://www.instagram.com/monoasterdev/"><svg><use href="#exit"/></svg>Follow on Instagram <span>monoasterdev</span></a></li>
+        <li><a href="https://www.threads.com/@monoasterdev"><svg><use href="#exit"/></svg>Threads <span>@monoasterdev</span></a></li>
+        <li><a href="https://x.com/monoasterdev"><svg><use href="#exit"/></svg>X <span>monoasterdev</span></a></li>
+        <li><a href="https://github.com/monoaster"><svg><use href="#exit"/></svg>GitHub <span>monoaster</span></a></li>
+      </ul>
+    </div>
+    <p class="works avoid">Road under construction <span>The next project is being built.</span></p>
+    <p class="foot avoid">Everything here is free and open source.</p>
+  </section>
 </main>
+<a class="tail off" href="https://www.instagram.com/monoasterdev/">Follow</a>
+
+<script>
+(() => {
+  const cv = document.getElementById('road'), ctx = cv.getContext('2d');
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const ease = t => t * t * t * (t * (6 * t - 15) + 10);
+  const hash = n => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+
+  let W = 0, H = 0, CH = 0, dpr = 1, docH = 0, RW = 64, F = .6;
+  let anchors = [], avoid = [], pts = [], cum = [], lamps = [], blocks = [], specks = [], bands = [], trees = [], driveins = [];
+  let apronA = 0, apronB = 0, heroX = 0, startY = 0, endY = 0, roadEnd = 0, ground = null;
+  const STEP = 5;
+
+  // ---- fit the painted name to the tarmac width
+  function fitName() {
+    const h = document.querySelector('.name'), s = h.firstElementChild;
+    const fs = parseFloat(getComputedStyle(h).fontSize), w = s.getBoundingClientRect().width;
+    if (w > 0) document.documentElement.style.setProperty('--fs', (fs * h.clientWidth / w * .995).toFixed(2) + 'px');
+  }
+
+  const pageRect = el => { const r = el.getBoundingClientRect(), y = scrollY; return { l: r.left, r: r.right, t: r.top + y, b: r.bottom + y }; };
+
+  function roadX(y) {
+    if (y <= anchors[0].y1) return anchors[0].x;
+    for (let i = 0; i < anchors.length - 1; i++) {
+      const a = anchors[i], b = anchors[i + 1];
+      if (y <= a.y1) return a.x;
+      if (y < b.y0) return lerp(a.x, b.x, ease((y - a.y1) / (b.y0 - a.y1)));
+    }
+    return anchors[anchors.length - 1].x;
+  }
+
+  function size() {                                    // the canvas covers the tallest viewport the phone can show
+    CH = cv.clientHeight || innerHeight;
+    cv.width = Math.round(innerWidth * dpr); cv.height = Math.round(CH * dpr);
+  }
+  function layout() {
+    W = innerWidth; H = innerHeight; dpr = Math.min(devicePixelRatio || 1, 2);
+    size();
+    fitName();
+    docH = document.documentElement.scrollHeight;
+    RW = W < 760 ? 64 : 92;
+    avoid = [...document.querySelectorAll('.avoid')].map(pageRect);
+    const sideX = r => (r.l + r.r) / 2 < W / 2
+      ? r.r + clamp((W - r.r) / 2, 52, 230)
+      : r.l - clamp(r.l / 2, 52, 230);
+    const side = [...document.querySelectorAll('.roadside')].map(el => { const r = pageRect(el); return { y0: r.t - 30, y1: r.b + 30, x: sideX(r) }; });
+    heroX = W / 2 + (side[0].x - W / 2) * .55;
+    const pb = pageRect(document.querySelector('.plates')).b;
+    apronA = Math.max(H * .47, pb + 20); apronB = apronA + H * .17; startY = Math.max(H * F, pb + 96);
+    const end = pageRect(document.querySelector('.gantry'));
+    roadEnd = docH - H * .27; endY = roadEnd - RW * .9;
+    anchors = [{ y0: 0, y1: apronB + H * .02, x: heroX }, ...side, { y0: end.t - 40, y1: docH, x: W / 2 }];
+    for (let i = 1; i < anchors.length; i++) anchors[i].y0 = Math.max(anchors[i].y0, anchors[i - 1].y1 + 1);
+
+    pts = []; cum = [];
+    for (let y = 0, l = 0, px = roadX(0); y <= roadEnd; y += STEP) {
+      const x = roadX(y); l += Math.hypot(x - px, y ? STEP : 0); px = x; pts.push(x); cum.push(l);
+    }
+
+    // set pieces in the gaps between stops: a river, then a metro line, in turn
+    bands = [];
+    for (let i = 1, k = 0; i < anchors.length - 1; i++) {
+      const g0 = anchors[i].y1, g1 = anchors[i + 1].y0;
+      if (g1 - g0 < 190) continue;
+      const kind = k++ % 2 ? 'metro' : 'river', h = kind === 'river' ? clamp((g1 - g0) * .36, 80, 170) : 36;
+      bands.push({ kind, y: (g0 + g1) / 2 - h / 2, h, seed: i * 17.3 });
+    }
+    const inBand = (y0, y1, pad) => bands.some(b => y1 + pad > b.y && y0 - pad < b.y + b.h);
+    driveins = [...document.querySelectorAll('.drivein')].map(pageRect);
+
+    const blocked = (x, y, pad) => avoid.some(r => x > r.l - pad && x < r.r + pad && y > r.t - pad && y < r.b + pad);
+    lamps = [];
+    for (let y = Math.max(H * .86, apronB + 150), i = 0; y < roadEnd - 40; y += 290, i++) {
+      const s = i % 2 ? 1 : -1, x = roadX(y) + s * (RW / 2 + 15);
+      if (x > 8 && x < W - 8 && !blocked(x, y, 6) && !inBand(y, y, 26)) lamps.push({ x, y, s });
+    }
+    // city blocks, kept clear of the road, the signs and the painted name
+    blocks = [];
+    const heroCopy = pageRect(document.querySelector('.plates')).b + 30;
+    const lo = W < 760 ? 44 : 70, hi = W < 760 ? 86 : 150;
+    for (let i = 0, n = Math.round(docH * W / (W < 760 ? 26000 : 60000)); i < n * 6 && blocks.length < n; i++) {
+      const w = lerp(lo, hi, hash(i + .1)), h = lerp(lo, hi, hash(i + .2));
+      const x = hash(i + .3) * (W + 40) - 20 - w / 2, y = heroCopy + hash(i + .4) * (docH - heroCopy - h - 20);
+      let ok = y > apronB || true;
+      for (const yy of [y - 10, y + h / 2, y + h + 10]) {
+        const rx = yy < apronB ? heroX : roadX(yy), half = yy < apronB ? lerp(W, RW / 2, ease(clamp((yy - apronA) / (apronB - apronA), 0, 1))) : RW / 2;
+        if (x + w > rx - half - 16 && x < rx + half + 16) ok = false;
+      }
+      if (yy_end(y + h)) ok = false;
+      if (ok && avoid.some(r => x + w > r.l - 14 && x < r.r + 14 && y + h > r.t - 14 && y < r.b + 124)) ok = false;
+      if (ok && inBand(y, y + h, 34)) ok = false;
+      if (ok && blocks.some(b => x + w > b.x - 12 && x < b.x + b.w + 12 && y + h > b.y - 12 && y < b.y + b.h + 12)) ok = false;
+      if (ok) blocks.push({ x, y, w, h, z: lerp(50, 190, hash(i + .5) ** 1.6), seed: i * 3.7, beacon: hash(i + .6) > .7 });
+    }
+    // trees fill the ground the buildings left
+    trees = [];
+    for (let i = 0, n = Math.round(docH * W / (W < 760 ? 21000 : 30000)); i < n * 4 && trees.length < n; i++) {
+      const r = lerp(7, 13, hash(i + 20.1)), x = hash(i + 20.3) * W, y = heroCopy + 40 + hash(i + 20.4) * (docH - heroCopy - 80);
+      const rx = y < apronB ? heroX : roadX(y), half = y < apronB + 20 ? W : RW / 2;
+      if (Math.abs(x - rx) < half + r + 12 || y > roadEnd + 30) continue;
+      if (inBand(y, y, r + 8)) continue;
+      if (avoid.some(a => x + r > a.l - 8 && x - r < a.r + 8 && y + r > a.t - 8 && y - r < a.b + 124)) continue;
+      if (blocks.some(b => x + r > b.x - 8 && x - r < b.x + b.w + 8 && y + r > b.y - 8 && y - r < b.y + b.h + 8)) continue;
+      trees.push({ x, y, r, k: hash(i + 20.7) });
+    }
+    specks = [];
+    for (let i = 0, n = Math.round(docH * W / 5200); i < n; i++)
+      specks.push({ x: Math.round(hash(i + .7) * W / 11) * 11, y: Math.round(hash(i + .8) * docH / 11) * 11, c: hash(i + .9), a: .1 + hash(i + 1.1) * .32 });
+
+    ground = ctx.createLinearGradient(0, 0, 0, docH);
+    ground.addColorStop(0, '#2b1646'); ground.addColorStop(.45, '#171a44'); ground.addColorStop(1, '#0f2647');
+
+    const stops = [...document.querySelectorAll('[data-stop]')];
+    const row = (el, href) => `<li><a href="${href}"><span>${el.dataset.stop}</span><span>${(Math.max(0, pageRect(el).t - startY) / 1000).toFixed(1)} km</span></a></li>`;
+    stops.forEach(el => { if (!el.id && !el.closest('#follow')) el.id = 'stop-' + el.dataset.stop.toLowerCase().replace(/[^a-z0-9]+/g, '-'); });
+    document.getElementById('dist').innerHTML = stops.slice(0, -1).slice(0, 3).map(el => row(el, '#' + el.id)).join('') + row(stops[stops.length - 1], '#follow');
+    trafficEnd = pageRect(document.querySelector('.gantry')).t - 120;
+    litEls = stops.map(el => ({ el, r: pageRect(el) }));
+  }
+  function yy_end(y) { return y > roadEnd - 10 && false; }
+
+  // ---- car
+  const car = { y: 0, x: 0, ang: Math.PI / 2, dir: 1, v: 0, drift: 0, init: false };
+  let trail = [], smoke = [], lastScroll = -1e9, puffAt = 0, trafficEnd = 0, litEls = [];
+  const target = () => clamp(scrollY + H * F, startY, endY);
+
+  function stepCar(dt, now) {
+    const ty = target(), py = car.y;
+    if (!car.init || calm) { car.y = ty; car.init = true; }
+    else car.y += (ty - car.y) * (1 - Math.exp(-dt * 8));
+    car.v = dt > 0 ? (car.y - py) / dt : 0;
+    if (Math.abs(car.v) > 30) car.dir = Math.sign(car.v);
+    const slope = (roadX(car.y + 4) - roadX(car.y - 4)) / 8;
+    const curv = (roadX(car.y + 14) - 2 * roadX(car.y) + roadX(car.y - 14)) / 196;
+    const want = Math.atan2(car.dir, car.dir * slope);
+    car.drift += (clamp(curv * car.v * .035, -.26, .26) - car.drift) * (1 - Math.exp(-dt * 7));
+    let d = want - car.ang; d = Math.atan2(Math.sin(d), Math.cos(d));
+    car.ang = calm ? want : car.ang + d * (1 - Math.exp(-dt * 9));
+    const a = car.ang, off = RW * .26;                       // keep left
+    car.x = roadX(car.y) + Math.sin(a) * off; car.py = car.y - Math.cos(a) * off;
+    const L = RW * .6, Wd = L * .44, sp = Math.abs(car.v);
+    if (calm) return;
+    const rear = [car.x - Math.cos(a) * L * .5, car.py - Math.sin(a) * L * .5];
+    if (sp > 40) {
+      const nx = -Math.sin(a) * Wd * .34, ny = Math.cos(a) * Wd * .34;
+      trail.push({ ax: rear[0] + nx, ay: rear[1] + ny, bx: rear[0] - nx, by: rear[1] - ny, t: now });
+    }
+    const sliding = Math.abs(car.drift) > .16 || Math.abs(d) > .5;
+    if ((sliding && sp > 60) || (sp < 20 && now > puffAt)) {
+      if (!sliding) puffAt = now + 520;
+      smoke.push({ x: rear[0] + (Math.random() - .5) * 6, y: rear[1] + (Math.random() - .5) * 6, vx: -Math.cos(a) * (sliding ? 10 : 22) + (Math.random() - .5) * 14, vy: -Math.sin(a) * (sliding ? 10 : 22) + (Math.random() - .5) * 14, r: sliding ? 6 : 3, t: now, life: sliding ? 900 : 1300, a: sliding ? .3 : .22 });
+    }
+    trail = trail.filter(p => now - p.t < 1100);
+    smoke = smoke.filter(p => now - p.t < p.life);
+  }
+
+  // ---- drawing
+  function rr(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
+
+  function drawRoad(y0, y1) {
+    roadStroke(y0, y1);
+    // start apron, funnelling into the road
+    if (y0 < apronB) {
+      const half = y => lerp(W, RW / 2, ease(clamp((y - apronA) / (apronB - apronA), 0, 1)));
+      const cx = y => lerp(W / 2, heroX, ease(clamp((y - apronA) / (apronB - apronA), 0, 1)));
+      const edge = s => { for (let y = apronA; y <= apronB; y += 4) ctx.lineTo(cx(y) + s * half(y), y); };
+      ctx.beginPath(); ctx.moveTo(-10, -400); ctx.lineTo(W + 10, -400);
+      for (let y = apronA; y <= apronB; y += 4) ctx.lineTo(cx(y) + half(y), y);
+      for (let y = apronB; y >= apronA; y -= 4) ctx.lineTo(cx(y) - half(y), y);
+      ctx.closePath(); ctx.fillStyle = '#37355e'; ctx.fill();
+      ctx.strokeStyle = 'rgba(241,238,251,.9)'; ctx.lineWidth = 2;
+      for (const s of [-1, 1]) { ctx.beginPath(); for (let y = apronA; y <= apronB; y += 4) ctx.lineTo(cx(y) + s * (half(y) - 5), y); ctx.stroke(); }
+      // start line, just ahead of the bonnet
+      ctx.fillStyle = 'rgba(241,238,251,.92)'; ctx.fillRect(heroX - RW / 2 + 6, startY + RW * .62, RW - 12, 5);
+    }
+  }
+  function roadStroke(y0, y1) {
+    const i0 = Math.max(Math.ceil(apronA / STEP), Math.floor(y0 / STEP)), i1 = Math.min(pts.length - 1, Math.ceil(y1 / STEP));
+    if (i1 <= i0) return;
+    ctx.beginPath(); for (let i = i0; i <= i1; i++) ctx.lineTo(pts[i], i * STEP);
+    ctx.lineJoin = 'round'; ctx.lineCap = 'butt'; ctx.setLineDash([]);
+    for (const b of bands) if (b.kind === 'river' && b.y < y1 && b.y + b.h > y0) {     // bridge deck
+      const a = Math.max(i0, Math.floor((b.y - 16) / STEP)), z = Math.min(i1, Math.ceil((b.y + b.h + 16) / STEP));
+      if (z <= a) continue;
+      const deck = new Path2D(); for (let i = a; i <= z; i++) deck.lineTo(pts[i], i * STEP);
+      ctx.strokeStyle = 'rgba(4,10,30,.5)'; ctx.lineWidth = RW + 44; ctx.stroke(deck);
+      ctx.strokeStyle = '#5a5688'; ctx.lineWidth = RW + 26; ctx.stroke(deck);
+      ctx.strokeStyle = '#8f8ac0'; ctx.lineWidth = RW + 26; ctx.setLineDash([3, 15]); ctx.stroke(deck); ctx.setLineDash([]);
+      ctx.strokeStyle = '#5a5688'; ctx.lineWidth = RW + 20; ctx.stroke(deck);
+    }
+    ctx.strokeStyle = 'rgba(8,8,26,.55)'; ctx.lineWidth = RW + 12; ctx.stroke();
+    ctx.strokeStyle = '#37355e'; ctx.lineWidth = RW; ctx.stroke();
+    ctx.strokeStyle = 'rgba(241,238,251,.9)'; ctx.lineWidth = RW - 8; ctx.stroke();
+    ctx.strokeStyle = '#37355e'; ctx.lineWidth = RW - 12; ctx.stroke();
+    ctx.setLineDash([14, 20]); ctx.lineDashOffset = cum[i0] % 34;
+    ctx.strokeStyle = '#ffc23d'; ctx.lineWidth = 2.5; ctx.stroke(); ctx.setLineDash([]);
+    // painted lane arrows, in the lane the car keeps to
+    ctx.fillStyle = 'rgba(241,238,251,.72)';
+    for (let y = Math.ceil(Math.max(y0, apronB + 150) / 560) * 560; y < Math.min(y1, roadEnd - 160); y += 560) {
+      const x = roadX(y) + RW * .26, w = RW * .09;
+      ctx.fillRect(x - w * .3, y - 16, w * .6, 20);
+      ctx.beginPath(); ctx.moveTo(x - w, y + 3); ctx.lineTo(x + w, y + 3); ctx.lineTo(x, y + 17); ctx.fill();
+    }
+    // end of the road: stop line and a striped barrier
+    if (y1 > roadEnd - 20) {
+      const x = pts[pts.length - 1];
+      ctx.fillStyle = 'rgba(241,238,251,.92)'; ctx.fillRect(x - RW / 2 + 6, roadEnd - 9, RW - 12, 5);
+      const bw = RW + 26; ctx.save(); rr(x - bw / 2, roadEnd + 4, bw, 13, 3); ctx.clip();
+      ctx.fillStyle = '#f1eefb'; ctx.fillRect(x - bw / 2, roadEnd + 4, bw, 13);
+      ctx.fillStyle = '#e2232a'; for (let k = -2; k < bw / 14 + 2; k++) { ctx.beginPath(); const bx = x - bw / 2 + k * 18; ctx.moveTo(bx, roadEnd + 17); ctx.lineTo(bx + 9, roadEnd + 17); ctx.lineTo(bx + 19, roadEnd + 4); ctx.lineTo(bx + 10, roadEnd + 4); ctx.fill(); }
+      ctx.restore();
+    }
+  }
+
+  function paintCar(L, Wd, body, hi, roof, brake) {
+    ctx.fillStyle = 'rgba(0,0,0,.42)'; rr(-L / 2 + 2, -Wd / 2 + 3, L, Wd, Wd * .36); ctx.fill();
+    ctx.fillStyle = '#0b0a1c'; for (const sx of [-.31, .29]) for (const sy of [-1, 1]) ctx.fillRect(L * sx - L * .08, sy * Wd * .5 - 1.5, L * .16, 3);   // tyres
+    ctx.fillStyle = body; rr(-L / 2, -Wd / 2, L, Wd, Wd * .36); ctx.fill();
+    ctx.fillRect(L * .1, -Wd * .62, L * .07, Wd * 1.24);                                              // mirrors
+    ctx.fillStyle = hi; rr(L * .12, -Wd * .3, L * .3, Wd * .6, Wd * .2); ctx.fill();                  // bonnet
+    ctx.fillStyle = '#141833'; rr(-L * .3, -Wd * .4, L * .46, Wd * .8, Wd * .22); ctx.fill();          // glass
+    ctx.fillStyle = 'rgba(201,211,255,.28)'; ctx.fillRect(L * .09, -Wd * .3, L * .03, Wd * .6);        // windscreen glint
+    ctx.fillStyle = roof; rr(-L * .2, -Wd * .33, L * .25, Wd * .66, Wd * .14); ctx.fill();            // roof
+    ctx.fillStyle = '#fff4d6'; ctx.fillRect(L / 2 - 3, -Wd * .42, 3, Wd * .24); ctx.fillRect(L / 2 - 3, Wd * .18, 3, Wd * .24);
+    ctx.fillStyle = brake ? '#ffb0b4' : '#ff5a62'; ctx.fillRect(-L / 2, -Wd * .42, 2.5, Wd * .26); ctx.fillRect(-L / 2, Wd * .16, 2.5, Wd * .26);
+  }
+  function beams(L, Wd, len, a0, tail) {
+    ctx.globalCompositeOperation = 'lighter';
+    const g = ctx.createLinearGradient(L * .4, 0, L * .4 + len, 0);
+    g.addColorStop(0, `rgba(255,244,214,${a0})`); g.addColorStop(.35, `rgba(255,244,214,${a0 * .38})`); g.addColorStop(1, 'rgba(255,244,214,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(L * .45, -Wd * .42); ctx.lineTo(L * .45 + len, -len * .36); ctx.lineTo(L * .45 + len, len * .36); ctx.lineTo(L * .45, Wd * .42); ctx.fill();
+    const tg = ctx.createRadialGradient(-L * .55, 0, 0, -L * .55, 0, L * .7);
+    tg.addColorStop(0, `rgba(255,40,50,${tail})`); tg.addColorStop(1, 'rgba(255,40,50,0)'); ctx.fillStyle = tg; ctx.fillRect(-L * 1.3, -L * .7, L * 1.4, L * 1.4);
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  // ---- oncoming traffic, in the other lane
+  const TRAFFIC = [
+    { o: .05, c: ['#f1eefb', '#ffffff', '#cfcbe6'] },
+    { o: .31, c: ['#ffc23d', '#ffd97a', '#d99a14'] },
+    { o: .54, c: ['#2f8fe8', '#62b0f5', '#1f6fc0'] },
+    { o: .80, c: ['#16a37a', '#35c49a', '#0d7d5c'] },
+  ];
+  function drawTraffic(now, y0, y1) {
+    const top = apronB + 70, R = trafficEnd - top, t = calm ? 0 : now / 1000, L = RW * .56, Wd = L * .44;
+    if (R < 300) return;
+    const heroLat = (car.x - roadX(car.y)) / (RW * .26);      // +1 in the car's own lane, -1 when it has crossed into theirs
+    for (const c of TRAFFIC) {
+      const y = top + R - ((c.o * R + t * 140) % R);
+      if (y < y0 - 60 || y > y1 + 60) continue;
+      const slope = (roadX(y + 4) - roadX(y - 4)) / 8, a = Math.atan2(-1, -slope);
+      // if the red car is in this lane (it turned round), pull out and pass it on the free side
+      const pass = ease(1 - clamp((Math.abs(y - car.y) - 48) / 70, 0, 1)) * clamp(-heroLat * 1.6, 0, 1), lat = (1 - 2 * pass) * RW * .26;
+      const x = roadX(y) + Math.sin(a) * lat, py = y - Math.cos(a) * lat;
+      ctx.save(); ctx.translate(x, py); ctx.rotate(a);
+      ctx.globalAlpha = clamp(Math.min(y - top, top + R - y) / 70, 0, 1);
+      beams(L, Wd, L * 3.4, .3, .22); paintCar(L, Wd, c.c[0], c.c[1], c.c[2], false);
+      ctx.restore();
+    }
+  }
+
+  // ---- the river, with a boat that slips under the bridge
+  function drawRiver(b, now) {
+    const t = calm ? 0 : now / 1000, edge = x => Math.sin(x * .012 + b.seed) * 9 + Math.sin(x * .031 + b.seed * 2) * 4;
+    const bank = new Path2D();
+    for (let x = -10; x <= W + 10; x += 10) bank.lineTo(x, b.y + edge(x));
+    for (let x = W + 10; x >= -10; x -= 10) bank.lineTo(x, b.y + b.h + edge(x + 300));
+    bank.closePath();
+    ctx.fillStyle = '#0c3566'; ctx.fill(bank);
+    ctx.strokeStyle = 'rgba(143,220,255,.3)'; ctx.lineWidth = 2; ctx.stroke(bank);
+    ctx.save(); ctx.clip(bank);
+    for (let i = 0, n = Math.round(W * b.h / 2400); i < n; i++) {
+      const hx = hash(b.seed + i * 1.3), hy = hash(b.seed + i * 2.7);
+      const x = ((hx * (W + 80) + t * (8 + hy * 14)) % (W + 80)) - 40, y = b.y + 10 + hy * (b.h - 20);
+      ctx.fillStyle = `rgba(143,220,255,${.1 + .2 * (.5 + .5 * Math.sin(t * 1.3 + i))})`; ctx.fillRect(x, y, 10 + hx * 16, 2);
+    }
+    const rx = roadX(b.y + b.h / 2);                       // bridge lamps, mirrored in the water
+    for (const s of [-1, 1]) for (let k = 0; k < 3; k++) {
+      const y = b.y + b.h * (.25 + k * .25), x0 = rx + s * (RW / 2 + 16), len = 50 + 10 * Math.sin(t * 2 + k + s);
+      const g = ctx.createLinearGradient(x0, 0, x0 + s * len, 0);
+      g.addColorStop(0, 'rgba(255,194,61,.55)'); g.addColorStop(1, 'rgba(255,194,61,0)');
+      ctx.fillStyle = g; ctx.fillRect(Math.min(x0, x0 + s * len), y - 1.5, len, 3);
+    }
+    const bx = ((t * 13 + b.seed * 40) % (W + 140)) - 70, by = b.y + b.h * .58 + Math.sin(t * .8) * 3;   // boat
+    ctx.strokeStyle = 'rgba(241,238,251,.3)'; ctx.lineWidth = 1.5; ctx.beginPath();
+    ctx.moveTo(bx - 12, by - 4); ctx.lineTo(bx - 44, by - 13); ctx.moveTo(bx - 12, by + 4); ctx.lineTo(bx - 44, by + 13); ctx.stroke();
+    ctx.fillStyle = '#f1eefb'; ctx.beginPath(); ctx.moveTo(bx - 13, by - 6); ctx.lineTo(bx + 7, by - 6); ctx.lineTo(bx + 17, by); ctx.lineTo(bx + 7, by + 6); ctx.lineTo(bx - 13, by + 6); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#e2232a'; ctx.fillRect(bx - 8, by - 3.5, 10, 7);
+    ctx.fillStyle = '#ffe2ae'; ctx.beginPath(); ctx.arc(bx + 11, by, 2, 0, 7); ctx.fill();
+    ctx.restore();
+  }
+
+  // ---- the metro: a viaduct over the road, a train every few seconds
+  function drawMetro(b, now) {
+    const y = b.y, h = b.h;
+    ctx.fillStyle = 'rgba(6,5,22,.4)'; ctx.fillRect(0, y + 12, W, h);
+    ctx.fillStyle = '#4a467a'; ctx.fillRect(0, y, W, h);
+    ctx.fillStyle = 'rgba(20,18,50,.55)'; for (let x = 2; x < W; x += 9) ctx.fillRect(x, y + 8, 3, h - 16);
+    ctx.fillStyle = '#b9b4dc'; ctx.fillRect(0, y + 11, W, 1.5); ctx.fillRect(0, y + h - 12.5, W, 1.5);
+    ctx.fillStyle = '#6a65a3'; ctx.fillRect(0, y, W, 3); ctx.fillRect(0, y + h - 3, W, 3);
+    const cw = 56, n = 5, tl = n * (cw + 4), x0 = calm ? W * .16 : -tl - 60 + ((now + b.seed * 400) % 8200) / 1000 * 250;
+    if (x0 > W + 40) return;
+    ctx.globalCompositeOperation = 'lighter';                 // window light spilling onto the deck
+    ctx.fillStyle = 'rgba(255,200,97,.28)'; ctx.fillRect(x0, y + 3, tl - 4, 5); ctx.fillRect(x0, y + h - 8, tl - 4, 5);
+    const hg = ctx.createLinearGradient(x0 + tl, 0, x0 + tl + 90, 0);
+    hg.addColorStop(0, 'rgba(255,244,214,.4)'); hg.addColorStop(1, 'rgba(255,244,214,0)'); ctx.fillStyle = hg; ctx.fillRect(x0 + tl - 4, y + 6, 94, h - 12);
+    ctx.globalCompositeOperation = 'source-over';
+    for (let i = 0; i < n; i++) {
+      const x = x0 + i * (cw + 4);
+      ctx.fillStyle = '#ecebf8'; rr(x, y + 7, cw, h - 14, i === n - 1 ? [4, 11, 11, 4] : i ? 4 : [11, 4, 4, 11]); ctx.fill();
+      ctx.fillStyle = '#123f9c'; ctx.fillRect(x + 6, y + h / 2 - 3, cw - 12, 6);
+      ctx.fillStyle = '#ffc861'; for (let k = 0; k < 4; k++) { ctx.fillRect(x + 7 + k * 11.5, y + 8, 7, 2.5); ctx.fillRect(x + 7 + k * 11.5, y + h - 10.5, 7, 2.5); }
+    }
+  }
+
+  // ---- the drive-in audience, parked under the screen
+  function drawAudience(r, now) {
+    const L = RW * .5, Wd = L * .46, y = r.b + 74, cols = ['#8d3bd6', '#f1eefb', '#16a37a', '#ffc23d', '#2f8fe8', '#e2232a', '#cfcbe6'];
+    const n = Math.max(3, Math.floor((r.r - r.l - 16) / (Wd + 13))), gap = (r.r - r.l - 16) / n;
+    ctx.globalCompositeOperation = 'lighter';                 // the screen's light on the lot
+    const g = ctx.createLinearGradient(0, r.b, 0, r.b + 120);
+    g.addColorStop(0, `rgba(140,150,255,${calm ? .2 : .17 + .05 * Math.sin(now / 430)})`); g.addColorStop(1, 'rgba(140,150,255,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(r.l + 20, r.b); ctx.lineTo(r.r - 20, r.b); ctx.lineTo(r.r + 14, r.b + 120); ctx.lineTo(r.l - 14, r.b + 120); ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+    for (let i = 0; i < n; i++) {
+      if (hash(i * 3.1 + r.t) < .16) continue;                // an empty bay or two
+      ctx.save(); ctx.translate(r.l + 8 + gap * (i + .5), y + (hash(i + r.t) - .5) * 8); ctx.rotate(-Math.PI / 2 + (hash(i * 2.3 + r.t) - .5) * .12);
+      paintCar(L, Wd, cols[Math.floor(hash(i * 5.7 + r.t) * cols.length)], 'rgba(255,255,255,.2)', 'rgba(0,0,0,.2)', false);
+      ctx.restore();
+    }
+  }
+
+  function drawCar(now, idle) {
+    const L = RW * .6, Wd = L * .44, a = car.ang + car.drift;
+    ctx.save(); ctx.translate(car.x, car.py); ctx.rotate(a);
+    beams(L, Wd, L * 5.2, .42, Math.abs(car.v) < 20 ? .5 : .34);
+    paintCar(L, Wd, '#e2232a', '#f24a4f', '#c21d24', Math.abs(car.v) < 20);
+    if (idle && !calm && (now % 900) < 450) {                // waiting with the indicator on
+      ctx.fillStyle = '#ffb347'; ctx.shadowColor = '#ffb347'; ctx.shadowBlur = 8;
+      ctx.fillRect(L / 2 - 4, -Wd / 2 - 1, 4, 3); ctx.fillRect(-L / 2, -Wd / 2 - 1, 4, 3);
+    }
+    ctx.restore();
+  }
+
+  function drawBlock(b, vx, vy, now) {
+    const s = 1 + b.z * .0012, R = (x, y) => [vx + (x - vx) * s, vy + (y - vy) * s];
+    const B = [[b.x, b.y], [b.x + b.w, b.y], [b.x + b.w, b.y + b.h], [b.x, b.y + b.h]], T = B.map(p => R(p[0], p[1]));
+    const cx = b.x + b.w / 2, cy = b.y + b.h / 2;
+    ctx.fillStyle = 'rgba(6,5,22,.45)'; ctx.fillRect(b.x - 3, b.y - 3, b.w + 6, b.h + 6);
+    for (let e = 0; e < 4; e++) {
+      const A = B[e], C = B[(e + 1) % 4], A2 = T[e], C2 = T[(e + 1) % 4];
+      const mx = (A[0] + C[0]) / 2 - cx, my = (A[1] + C[1]) / 2 - cy;
+      if (mx * (vx - cx) + my * (vy - cy) <= 0) continue;     // only walls that face the camera
+      ctx.fillStyle = e % 2 ? '#1c1745' : '#262058';
+      ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(C[0], C[1]); ctx.lineTo(C2[0], C2[1]); ctx.lineTo(A2[0], A2[1]); ctx.fill();
+      const cols = Math.max(2, Math.round((e % 2 ? b.h : b.w) / 13)), rows = Math.max(2, Math.round(b.z / 26));
+      const P = (u, v) => { const x0 = lerp(A[0], C[0], u), y0 = lerp(A[1], C[1], u), x1 = lerp(A2[0], C2[0], u), y1 = lerp(A2[1], C2[1], u); return [lerp(x0, x1, v), lerp(y0, y1, v)]; };
+      for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) {
+        const k = b.seed + e * 31 + i * 7.3 + j * 13.9, slow = calm ? 0 : Math.floor(now / 2600 + hash(k) * 9);
+        const lit = hash(k + slow * .37); if (lit < .5) continue;
+        const u0 = (i + .22) / cols, u1 = (i + .78) / cols, v0 = (j + .25) / rows, v1 = (j + .75) / rows;
+        const q = [P(u0, v0), P(u1, v0), P(u1, v1), P(u0, v1)];
+        ctx.fillStyle = hash(k + 5) > .78 ? 'rgba(143,220,255,.8)' : `rgba(255,200,97,${.5 + lit * .45})`;
+        ctx.beginPath(); ctx.moveTo(q[0][0], q[0][1]); for (let n = 1; n < 4; n++) ctx.lineTo(q[n][0], q[n][1]); ctx.fill();
+      }
+    }
+    ctx.fillStyle = '#312a6c'; ctx.beginPath(); ctx.moveTo(T[0][0], T[0][1]); for (let n = 1; n < 4; n++) ctx.lineTo(T[n][0], T[n][1]); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = 'rgba(201,211,255,.3)'; ctx.lineWidth = 1.5; ctx.stroke();
+    const tw = T[1][0] - T[0][0], th = T[3][1] - T[0][1];
+    ctx.fillStyle = '#262058'; ctx.fillRect(T[0][0] + tw * .14, T[0][1] + th * .16, tw * .3, th * .24);
+    const kind = hash(b.seed + 9.1);
+    if (tw > 62 && kind > .9) {                               // helipad
+      const cx2 = T[0][0] + tw * .5, cy2 = T[0][1] + th * .58, r = Math.min(tw, th) * .22;
+      ctx.strokeStyle = 'rgba(241,238,251,.55)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(cx2, cy2, r, 0, 7); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx2 - r * .4, cy2 - r * .5); ctx.lineTo(cx2 - r * .4, cy2 + r * .5); ctx.moveTo(cx2 + r * .4, cy2 - r * .5); ctx.lineTo(cx2 + r * .4, cy2 + r * .5); ctx.moveTo(cx2 - r * .4, cy2); ctx.lineTo(cx2 + r * .4, cy2); ctx.stroke();
+    } else if (tw > 54 && kind < .07) {                        // rooftop pool
+      ctx.fillStyle = '#38b6d9'; rr(T[0][0] + tw * .5, T[0][1] + th * .5, tw * .36, th * .3, 5); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(T[0][0] + tw * .56, T[0][1] + th * .58, tw * .12, 1.5);
+    } else {                                                  // air-con units
+      ctx.fillStyle = '#3f3884';
+      for (let k = 0, n = 2 + Math.floor(kind * 3); k < n; k++) ctx.fillRect(T[0][0] + tw * (.52 + k * .12), T[0][1] + th * .2, tw * .08, th * .1);
+    }
+    if (b.beacon) { const on = calm || (now + b.seed * 300) % 1800 < 700; ctx.fillStyle = on ? '#ff3a44' : '#5a1c2c'; ctx.beginPath(); ctx.arc(T[0][0] + tw * .76, T[0][1] + th * .72, 3, 0, 7); ctx.fill(); }
+  }
+
+  function draw(now) {
+    const sy = scrollY, y0 = sy - 240, y1 = sy + CH + 240, vx = W / 2, vy = sy + H / 2;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, -sy * dpr);
+    ctx.fillStyle = ground; ctx.fillRect(0, sy, W, CH);
+    for (const s of specks) if (s.y > sy && s.y < sy + CH) { ctx.fillStyle = s.c > .75 ? `rgba(143,220,255,${s.a})` : s.c > .2 ? `rgba(255,200,97,${s.a})` : `rgba(255,90,98,${s.a})`; ctx.fillRect(s.x, s.y, 3, 3); }
+    for (const b of bands) if (b.kind === 'river' && b.y < y1 && b.y + b.h > y0) drawRiver(b, now);
+    for (const t of trees) if (t.y > y0 && t.y < y1) {
+      ctx.fillStyle = 'rgba(6,5,22,.4)'; ctx.beginPath(); ctx.arc(t.x + 3, t.y + 4, t.r, 0, 7); ctx.fill();
+      ctx.fillStyle = t.k > .5 ? '#0f5a47' : '#0c4a3f'; ctx.beginPath(); ctx.arc(t.x, t.y, t.r, 0, 7); ctx.fill();
+      ctx.fillStyle = t.k > .5 ? '#1c7a5f' : '#17695a'; ctx.beginPath(); ctx.arc(t.x - t.r * .25, t.y - t.r * .28, t.r * .55, 0, 7); ctx.fill();
+    }
+    drawRoad(y0, y1);
+    for (const r of driveins) if (r.b + 140 > y0 && r.b < y1) drawAudience(r, now);
+    ctx.globalCompositeOperation = 'lighter';
+    for (const l of lamps) if (l.y > y0 && l.y < y1) {
+      const px = l.x - l.s * RW * .34, g = ctx.createRadialGradient(px, l.y, 0, px, l.y, RW * 1.7);
+      g.addColorStop(0, 'rgba(255,179,71,.3)'); g.addColorStop(.5, 'rgba(255,179,71,.09)'); g.addColorStop(1, 'rgba(255,179,71,0)');
+      ctx.fillStyle = g; ctx.fillRect(px - RW * 1.7, l.y - RW * 1.7, RW * 3.4, RW * 3.4);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.lineCap = 'round'; ctx.lineWidth = 2.2;
+    for (let i = 1; i < trail.length; i++) {
+      const p = trail[i - 1], q = trail[i]; if (q.t - p.t > 80) continue;
+      ctx.strokeStyle = `rgba(255,40,50,${.55 * (1 - (now - q.t) / 1100)})`;
+      ctx.beginPath(); ctx.moveTo(p.ax, p.ay); ctx.lineTo(q.ax, q.ay); ctx.moveTo(p.bx, p.by); ctx.lineTo(q.bx, q.by); ctx.stroke();
+    }
+    drawTraffic(now, y0, y1);
+    const idle = Math.abs(car.v) < 20 && (scrollY < 8 || scrollY > docH - H - 8);
+    drawCar(now, idle);
+    for (const p of smoke) { const k = (now - p.t) / p.life; ctx.fillStyle = `rgba(201,211,255,${p.a * (1 - k)})`; ctx.beginPath(); ctx.arc(p.x + p.vx * k, p.y + p.vy * k, p.r + k * 12, 0, 7); ctx.fill(); }
+    for (const b of bands) if (b.kind === 'metro' && b.y < y1 && b.y + b.h > y0) drawMetro(b, now);
+    blocks.filter(b => b.y + b.h > y0 - 80 && b.y < y1 + 80)
+      .sort((a, b) => Math.hypot(b.x + b.w / 2 - vx, b.y + b.h / 2 - vy) - Math.hypot(a.x + a.w / 2 - vx, a.y + a.h / 2 - vy))
+      .forEach(b => drawBlock(b, vx, vy, now));
+    for (const l of lamps) if (l.y > y0 && l.y < y1) {            // lamp posts lean with the same perspective
+      const s = 1.075, hx = vx + (l.x - l.s * RW * .3 - vx) * s, hy = vy + (l.y - vy) * s;
+      ctx.strokeStyle = '#6d6a8c'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(l.x, l.y); ctx.lineTo(hx, hy); ctx.stroke();
+      ctx.fillStyle = '#ffe2ae'; ctx.shadowColor = '#ffb347'; ctx.shadowBlur = 10; ctx.beginPath(); ctx.arc(hx, hy, 3.2, 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+    }
+  }
+
+  // ---- loop: runs only while something is moving
+  let raf = 0, last = 0, half = false;
+  function frame(now) {
+    raf = 0;
+    const busy = Math.abs(target() - car.y) > .4 || trail.length || now - lastScroll < 1200;
+    if (!calm && !document.hidden) raf = requestAnimationFrame(frame);
+    if (!busy && (half = !half)) return;
+    const dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
+    stepCar(dt, now); draw(now);
+    for (const l of litEls) l.el.classList.toggle('lit', car.y > l.r.t - 90 && car.y < l.r.b + 20);
+  }
+  const kick = () => { lastScroll = performance.now(); if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+
+  for (const el of document.querySelectorAll('.vms pre')) {
+    const pages = el.dataset.pages.split(';;').map(p => p.split('|').join('\n'));
+    let i = 0; el.textContent = pages[0];
+    if (!calm && pages.length > 1) setInterval(() => { if (!document.hidden) el.textContent = pages[i = (i + 1) % pages.length]; }, 2600);
+  }
+  for (const im of document.querySelectorAll('img[data-reel]')) {       // the drive-in changes reels
+    const reel = im.dataset.reel.split('|'); let i = 0, seen = false;
+    if (calm || reel.length < 2 || !('IntersectionObserver' in window)) continue;
+    new IntersectionObserver(es => { seen = es[0].isIntersecting; }, { rootMargin: '100px' }).observe(im);
+    setInterval(() => {
+      if (!seen || document.hidden) return;
+      const next = new Image(); next.src = reel[i = (i + 1) % reel.length];
+      next.decode().then(() => { im.classList.add('cut'); setTimeout(() => { im.src = next.src; im.classList.remove('cut'); }, 220); }).catch(() => {});
+    }, 3400);
+  }
+
+  const tail = document.querySelector('.tail');           // the follow plate hides while a follow sign is on screen
+  if (tail && 'IntersectionObserver' in window) {
+    const vis = new Set();
+    const io = new IntersectionObserver(es => { for (const e of es) e.isIntersecting ? vis.add(e.target) : vis.delete(e.target); tail.classList.toggle('off', vis.size > 0); });
+    for (const el of document.querySelectorAll('.plates, .gantry')) io.observe(el);
+  }
+
+  function boot() { if (!innerWidth || !innerHeight) { lw = 0; return; } lw = innerWidth; layout(); car.init = false; kick(); }
+  addEventListener('scroll', kick, { passive: true });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
+  let lw = 0, rt;
+  addEventListener('resize', () => { if (cv.clientHeight && cv.clientHeight !== CH) { size(); kick(); } clearTimeout(rt); rt = setTimeout(() => { if (innerWidth !== lw || Math.abs(innerHeight - H) > 120) boot(); }, 120); });
+  const jump = new URLSearchParams(location.search).get('y');
+  if (jump) history.scrollRestoration = 'manual';
+  const ready = () => { boot(); if (jump) { scrollTo({ top: +jump, behavior: 'instant' }); car.init = false; kick(); } };
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => {
+    if (document.readyState === 'complete') ready(); else addEventListener('load', ready);
+  });
+  boot();
+})();
+</script>
 </body>
 </html>
