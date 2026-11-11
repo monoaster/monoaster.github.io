@@ -295,8 +295,18 @@
        (add "drivein" and cars park under it; data-reel lists more pictures to show in turn). A .vms board is optional: lines split by |, pages by ;; -->
   <ol class="stops">
     <li>
-      <article class="sign avoid roadside" data-stop="tokwhere">
+      <article class="sign avoid roadside" data-stop="mcpweigh">
         <span class="new">New</span>
+        <h2>mcpweigh</h2>
+        <p>See how many tokens your MCP servers add to every request. Reads Claude Code, Cursor, Codex and Claude Desktop configs.</p>
+        <div class="vms" aria-hidden="true"><pre data-pages="4 MCP servers|~6.8k tokens|every request;;filesystem|16 tools|~2.6k tokens;;42 tools|before you|type a word;;100 requests|~679k tokens|on tool lists"></pre></div>
+        <p class="vms-note">Real numbers from four official MCP servers.</p>
+        <code class="cmd">npx github:monoaster/mcpweigh</code>
+        <a class="exit" href="https://github.com/monoaster/mcpweigh">Open on GitHub <svg><use href="#exit"/></svg></a>
+      </article>
+    </li>
+    <li>
+      <article class="sign avoid roadside" data-stop="tokwhere">
         <h2>tokwhere</h2>
         <p>See where your coding agent's tokens went. Reads Claude Code and Codex session logs.</p>
         <div class="vms" aria-hidden="true"><pre data-pages="one 24h session|201,176,063|tokens used;;bash 849 calls|~576k tokens|72 failed;;file-1.swift|read 23 times|8 unchanged;;1300 tool calls|17 subagents|all counted"></pre></div>
